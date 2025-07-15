@@ -332,6 +332,8 @@ We can now define the truth function of formulas for first order logic, inductiv
 Proofs in first order logic are usually extended versions of prepositional logic with the addition of axioms handling $forall$ and $exists$ such as:
 $ P(p_1) -> exists p_2 P(p_2), #h(20pt) forall p_1 P(p_1) -> P(p_2) $ 
  
+== Recursive functions
+
 = Second order logic
 
 This will be added later on

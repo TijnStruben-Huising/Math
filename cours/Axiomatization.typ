@@ -96,12 +96,12 @@ The important thing to understand is that they provide framworks for mathematica
 
 - Proof theory
   studies the proofs in formal languages. What can we prove, and what we can prove that we can't, but also the lengths of proofs and the computerisation of proofs.
-inversion
+
 - Type theory.
   This is a collection of formal systems for mathematics basing themselves on defining objects as having a type. This is especially used in computer assistred proofs. Instead of axioms it has rules of inference.
 
 - Set theory.
-  This is another collection of formal systems, where everything is a set. This is often more powerfull (in terms of what we can prove) than type theory but also more prone to problems such as paradoxes.
+  This is another collection of formal systems, where everything is a set. This is often more powerfull (in terms of what we can prove) than type theory but also more prone to problems such as paradoxes and studies different things.
 
 We will mainly be going over notions from proof theory and model theory in this chapter.
 
@@ -115,7 +115,7 @@ The definitions are pretty loosely followed and used by different authors, howev
 An example would be with the alphabet $Sigma attach(=,t:"def") {0,1}$ the language defined by:
 - $1$ is a sentence in the language
 - if $alpha$ is a sentence in the language than so is $alpha 1$ and $alpha 0$
-This language is essentially the set of all finite combinations of $0$ and $1$ starting with $1$ so the binairy numbers.
+This language is essentially the set of all finite combinations of $0$ and $1$ starting with $1$ so the binairy numbers (except for 0).
 Furthermore the word formula is often used in the place of sentence.\
 
 #underline[Formal system]: Is a formal language with axioms and inference rules.
@@ -162,21 +162,20 @@ As explained, we will explore different examples of formal systems in our chapte
 
 == Peano arithmetic
 
-Peano arithmetic (or PA) is one of the simplest constructs to implement and is very powerfull. We are essentially building natural numbers and arithmetic. Here we will show the axioms with an example in second order logic with an unspecified form of set theory.
+Peano arithmetic (or PA) is one of the simplest constructs to implement and is very powerfull. We are essentially building natural numbers and arithmetic. Here we will show the axioms with an example in second order logic with an unspecified form of set theory.\
 
-+ Existence of $0$, there exists an element called $0$ which is a natural number.
+PA is generaly framed in first order logic thought if so needs an infinite amount of axioms (axiom schema will later be defined), second order logic may help here and provide more power but is not needed.\
+It considers a constant $0$, a function $S$ of arity $1$ called the successor function, along with two more functions of arity $2$, $+$ and $times$. Furthermore we have the following axioms.
+- $0$ is the successor of nothing $forall x, not (x = S(0))$
+- Unicity of the successor function $forall x forall y, S(x) = S(y) -> x = y$
+- Definition of addition $forall x, x+0 = x$ and $forall x forall y, x + S(y) = S(x + y)$
+- Definition of multiplication $forall x, x times 0 = 0$ and $forall x forall y, x times S(y) = x + x times y$
+- Axiom of induction :for all formula $phi$ of arity $n+1$, $forall x_1..., forall x_n, (phi(0,x_1...,x_n) and forall m (phi(m,x_1...,x_n) -> phi(S(m),x_1...,x_n))) -> (forall m phi(m,x_1...,x_n))$
+\
+Note that this is with equality defined as more than just a logical predicate, but equality over the universe, else we would have to add:
++ equality is transitive, reflexive and symmetric and $NN$ is closed under equality that is to say $forall x forall y  x in NN and x = y -> y in NN$, and that is holds through all functions and relations ($a = b -> f(a) = f(b)$ and $a = b -> (P(a)<->P(b))$)
 
-+ The successor function. There exists a successor function such that:
-  - if $n$ is a natural number, so is $S(n)$ (S is closed over $NN$)
-  - if $S(a) = S(b)$ with $a in NN$ and $b in NN$ then $a = b$
-  - there is no natural number that is the successor of $0$ that is to say $not (exists a S(a) = 0)$
-  
-$ exists NN exists S exists 0 (forall n n in NN -> S(n) in NN) and (forall a forall b f(a) = f(b) -> a = b) and (not exists a f(a) = 0) $
-
-> Note that this is with equality defined as more than just a logical predicate, else we would have to add:
-+ equality is transitive, reflexive and symmetric and $NN$ is closed under equality that is to say $forall x forall y  x in NN and x = y -> y in NN$, and that is holds through $f$, $a = b -> f(a) = f(b)$.
-
-With natural numbers and some ways to work with sets, say build functions and pairs, we can build real numbers, multiplication and a huge part of mathematics. Therefore it is usualy one of most central elements to be able to emulate in a formal system.
+With natural numbers and some ways to work with sets, say build functions and pairs, we can build real numbers, and a huge part of mathematics. Therefore it is usualy one of most central elements to be able to emulate in a formal system.
 
 
 == Soundness and completeness

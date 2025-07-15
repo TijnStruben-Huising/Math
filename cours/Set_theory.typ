@@ -89,6 +89,12 @@ Here we will go over different axiomitazations and some theorems.
 
 It would be fun to jump right into the different commonly used theories but first we must adress some important theoretical notions around cardinality and ordinals.
 
+#underline[Finite]: Can be defined as: there is only one element in $cal(P)(X)$ isomorphic to $X$.
+
+== Ordinals
+
+=== Von Neumann definition
+
 = ZF (and ZFC)
 
 It is impossible to talk about sets without talking about Zermelo-Fraenkel, probably the most popular set of axioms around sets.
@@ -118,7 +124,7 @@ We also consider that at least one set exists (this is usualy taken care of by $
   $ forall x exists y forall z (z in y <-> (forall w (w in z -> w in x))) $
   This can be refomulated with $x subset y$ defined as $forall w (w in x -> w in y)$
   $ forall x exists y forall z (z in y <-> z subset x) $
-  This axiom helps us construct the power set often written $P(x)$
+  This axiom helps us construct the power set often written $cal(P)(x)$
   
 + Axiom of Unions
   $ forall x exists y forall z (z in y <-> exists w (w in x and z in w)) $
@@ -137,7 +143,7 @@ We also consider that at least one set exists (this is usualy taken care of by $
   $ forall z forall w_1... w_n exists y forall x (x in y <-> (x in z and phi(x,w_1...,w_n,z)))$
   With this we can build a subset of $z$ with a formula.
 
-+ Axiom of Replacement
++ Axiom of schema Replacement
   For every formula in ZF $phi$, with $X,x,y, w_1... w_n$ free in $phi$ and $B$ not free in $phi$\
   $ forall X forall w_1... w_n( forall x (x in X -> exists! y phi(y,x,w_1..., w_n)) -> exists B forall x (x in X -> exists y (y in B and phi(y,x,w_1..., w_n)))    ) $
   Bascially, if for all $x in X$ there is a unique set y holding then we can build the set of all of those sets.
@@ -191,8 +197,8 @@ $ forall x (emptyset in.not x -> exists f (f in X arrow.r.bar union_(A in X) A a
 - Construction of a function:\
 
   Lets start by constructing an ordered pair $(a,b)$ as ${a,{a,b}}$ then the (cartesian) product between two sets $A times B$ defined as
-  $ {x in P(P(A union B)) : exists , exists b (a in A and a in B and x = (a,b))} $ 
-  this works because for all $a in A, b in B$ $(a,b) in P(P(A union B))$, this is essentially ${ (a,b) : a in A, b in B}$
+  $ {x in cal(P)(cal(P)(A union B)) : exists , exists b (a in A and a in B and x = (a,b))} $ 
+  this works because for all $a in A, b in B$ $(a,b) in cal(P)(cal(P)(A union B))$, this is essentially ${ (a,b) : a in A, b in B}$
 
   Next we can define a function as a subset of $A times B$ such that $forall a in A, exists! x in A times B, exists b in B, x = (a,b)$
   Written $f in A arrow.r.bar B$
@@ -314,6 +320,51 @@ These axioms are :
 
 == Relationship to AC
 
+= Construction of $NN, ZZ, QQ, RR$
+We will get back to other set theories, similar to ZF, but first we shall apply ZF to build the sets we are familiar with!
+== $NN$
+We can very easily create implement PA, due to the axiom of infinity giving us the existence of a set that will contain our $NN$.\
+We define $0$ as $emptyset$, $1$ as ${emptyset}$, $2$ as ${emptyset,{emptyset}}$, $3$ as ${emptyset,{emptyset,{emptyset}}}$ and so on, such that $n+1$ is ${n} union n$. Althought the axiom of infinity isn't necessairy here, it gives us a set containing all these elements.\
+If we want to extract $NN$ exactly from our infinite set we'll call $I$ (this isn't a recognized notation) we will have to use the axiom of schema specification, the property to define a set as finite will be:
+$phi(n) attach(=,t:"def") (exists m space space n = m union {m}) and (forall m in n (m = emptyset or exists k in n space space m = k union {k}))$. Notice the first part of this avoids $n$ being a limit ordinal and the second part avoids it containing one. So we can define $NN$ as ${n in I : phi(n)}$.\
+\
+To define addition we will use recursive functions (see first order logic on recursive functions). We have $n+1$ as the successor of $n$, and if $n eq.not 0$ we can define $n-1$ as the only $m$ such that $m + 1 = n$. Next we can work on generalising addition.\
+$ n + m attach(=,t:"def") cases(n "if" m = 0, (n+1)+(m-1) "else") $
+And then multiplication.
+$ n times m attach(=,t:"def") cases(0 "if" m = 0, n+n times (m-1) "else") $
+
+== $ZZ$
+
+Now let's look at two methods to build $ZZ$.\
+\
+The first one is simple but a little brutish. We take $ZZ attach(=,t:"def") NN$ and for every element in $ZZ$ we say it is positive if even, negative if odd, and the "value" of $n$ is $n/2$ if $n$ is positive or $(n+1)/2$ if odd. We can then accordingly build our operators $+$ and $times$.\
+\
+The second way is a little more fun, it uses equivalency classes of $NN^2$.\
+#underline[Equivalency relationship]: Let $R$ be a relationship over $A$ (here we will consider the set based defintion of relationship, but it holds for first order logic version) that is to say a subset of $A^2$ for which we write $x R y$ if $(x,y) in R$ for $x,y in A$. A relationship is a equivalency relation if it is:
+- Reflexive ($forall x in A, x R x$)
+- Symmetrical ($forall x,y in A, x R y <-> y R x$)
+- Transitive ($forall x,y,z in A, (x R y and y R z) -> x R z$)
+Some well known examples are $=$, $eq.triple$, and $<->$.\
+#underline[Equivalency classes]: We can show that, for a set $A$ with a equivalency relation $R$, we can show that there exists a partition of $A$ (A set $B subset cal(P)(A)$ such that $emptyset in.not B$, and $forall x in A space space exists ! X in B space space x in X$) such that $forall X in B, forall x in X, y in X <-> x R y$. For example, with $NN$ as our set, the relation $x eq.triple y [2]$ is an equivalency relation and the equivalency classes are the set of even numbers and odd numbers ${{1,3,5,...},{0,2,4,...}}$.\
+\
+We take $NN^2$ and the relation defined over it by $(a,b) R (c,d) attach(<->,t:"def") a + d = b + c$ (mind that $R$ is a subset of $(NN^2)^2$ and not $NN^2$). It's easy to verify that this is in fact a equivalency relation.\ We then define members of $ZZ$ as equivalency classes. This ends up working great, and the equivalency class of the result of $(a,b),(c,d) arrow.bar (a+c,b+d)$ is independant of the representatives of each equivalency class.\
+For all $n in NN$ their equivalent in $ZZ$ is the equivalency class of $(n,0)$ and a number $(a,b)$ is said to be negatice if $a <= b$.
+== $QQ$
+With $ZZ$ defined, we can build a lot of algebra, which can be usefull for building $QQ$.
+Once again I'll propose two ways, but these are a lot closer to each other.\
+\
+The first one, much like our last construction of $ZZ$ will use the equivalency classes of $ZZ times NN^*$ for the relation $(a,b) R (c,d) attach(<->,t:"def") a times d = b times c$.
+\
+The second one is just taking the subset of $ZZ times NN^*$ such that $forall (a,b) in QQ, a "^" b = 1$. (This is just taking one element from each equivalency class of the previous construction, in this case the elements whith minimal second element).
+== $RR$
+This is where it gets interesting, all the previous structures have the same cardinality, this one is different. Furthermore I will explain two drastically different constructions.\
+\
+First lets do this with cauche sequences, these are sequences such that $forall epsilon > 0 exists N in NN forall n,m in NN, n >= N and m >= N -> abs(a_n - a_m) <= epsilon$. This property is often equivalent to convergence (such as in real numbers) but not in all sets.\
+To build $RR$ here, we build the equivalency classes of cauche sequences of $QQ^NN$ where equivalecy means $a_n - b_n attach(->, b:n->infinity) 0$. All classic operations work great and contrairily to $QQ$, all cauchy sequences converge within the set.\
+\
+The other method I will explain uses Dedekind cuts. A cut is a nonempty set $A subset.neq QQ$ such that:
+- A is closed downwards ($forall x in A, forall y in QQ, y < x -> y in A$)
+- A has no maximum ($not exists m in A, forall x in A, x <= m$)
 = Von Neumann\-Bernays\-Gödel 
 
 It is what we call a conservative extention of ZFC, which is to mean that is is a supertheory (keeps axioms and predicates and adds more) but prooves no new theories therefore proves exactly the same. It's interesting because it is easier to work with.
@@ -331,5 +382,6 @@ We can now define $x : x eq.not emptyset$ and choice function over it, $forall x
 
 
 = Morse Kelley
+
 
 ])
